@@ -9,6 +9,16 @@ REPOSITORY="wxyin/cbt2api"
 TAG=$(date +"%Y%m%d-%H%M%S")
 LATEST="latest"
 
+# Build frontend
+echo "Building frontend..."
+cd ./admin_frontend
+echo "Installing frontend dependencies..."
+npm install
+echo "Building frontend production assets..."
+npm run build
+cd ..
+echo "Frontend build completed."
+
 # Login to Docker Hub (will prompt for credentials if not already logged in)
 echo "Logging into Docker Hub..."
 docker login

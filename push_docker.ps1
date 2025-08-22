@@ -8,6 +8,16 @@ $REPOSITORY = "wxyin/cbt2api"
 $TAG = Get-Date -Format "yyyyMMdd-HHmmss"
 $LATEST = "latest"
 
+# Build frontend
+Write-Host "Building frontend..."
+Set-Location -Path ".\admin_frontend"
+Write-Host "Installing frontend dependencies..."
+npm install
+Write-Host "Building frontend production assets..."
+npm run build
+Set-Location -Path ".."
+Write-Host "Frontend build completed."
+
 # Login to Docker Hub (will prompt for credentials if not already logged in)
 Write-Host "Logging into Docker Hub..."
 docker login

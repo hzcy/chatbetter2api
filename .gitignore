@@ -1,0 +1,56 @@
+# IDE files
+.idea/
+.vscode/
+
+# Virtual environments
+.venv/
+venv/
+env/
+ENV/
+
+# Node.js dependencies
+admin_frontend/node_modules/
+npm-debug.log
+yarn-error.log
+yarn-debug.log
+
+# Python
+__pycache__/
+*.py[cod]
+*$py.class
+*.so
+.Python
+*.egg-info/
+.installed.cfg
+*.egg
+
+# Distribution / packaging
+dist/
+build/
+*.manifest
+*.spec
+
+# Logs
+logs/
+*.log
+cookies_checker.log
+models_checker.log
+
+# Local configuration
+.env
+.env.local
+.env.development.local
+.env.test.local
+.env.production.local
+
+# OS generated files
+.DS_Store
+.DS_Store?
+._*
+.Spotlight-V100
+.Trashes
+ehthumbs.db
+Thumbs.db
+
+# Large files
+*.zip 

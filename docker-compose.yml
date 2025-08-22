@@ -1,0 +1,63 @@
+version: '3'
+
+services:
+  # MySQL数据库服务
+  mysql:
+    image: mysql:8.0
+    container_name: chatbetter2api-mysql
+    restart: always
+    environment:
+      MYSQL_ROOT_PASSWORD: Shijie11
+      MYSQL_DATABASE: chatbetter2api
+      TZ: Asia/Shanghai
+    ports:
+      - "33166:3306"
+    volumes:
+      - ./mysql_data:/var/lib/mysql
+      - ./mysql:/docker-entrypoint-initdb.d
+    command: --default-authentication-plugin=mysql_native_password
+    healthcheck:
+      test: ["CMD", "mysqladmin", "ping", "-h", "localhost", "-u", "root", "-pShijie11"]
+      interval: 10s
+      timeout: 5s
+      retries: 5
+
+  # Redis服务
+  redis:
+    image: redis:7.0
+    container_name: chatbetter2api-redis
+    restart: always
+    ports:
+      - "6379:6379"
+    volumes:
+      - redis_data:/data
+    command: redis-server --appendonly yes
+
+  # 应用服务
+  chatbetter2api:
+    build: .
+    container_name: chatbetter2api
+    restart: always
+    depends_on:
+      mysql:
+        condition: service_healthy
+      redis:
+        condition: service_started
+    environment:
+      - MYSQL_USER=root
+      - MYSQL_PASSWORD=Shijie11
+      - FILE_DOMAIN=https://file.xxsxx.fun
+      - ADMIN_PASSWORD=Shijie11
+      - REGISTER_MAX_THREADS=10
+      - PROXY_URL=socks5://gw.dataimpulse.com:824
+      - TZ=Asia/Shanghai
+      - REDIS_HOST=redis
+      - REDIS_PORT=6379
+    ports:
+      - "8055:8055"
+    volumes:
+      - ./static:/app/static
+
+volumes:
+  mysql_data:
+  redis_data: 

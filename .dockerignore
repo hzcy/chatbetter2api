@@ -1,0 +1,50 @@
+# IDE and editor folders
+.idea/
+.vscode/
+*.swp
+*.swo
+*~
+
+# Virtual environments
+.venv/
+venv/
+ENV/
+env/
+
+# Frontend source and dependencies
+admin_frontend/node_modules/
+admin_frontend/src/
+admin_frontend/.vite/
+
+# Git
+.git/
+.gitignore
+
+# Python
+__pycache__/
+*.py[cod]
+*$py.class
+*.so
+.Python
+*.egg-info/
+.installed.cfg
+*.egg
+
+# Logs
+*.log
+logs/
+cookies_checker.log
+models_checker.log
+
+# Docker files
+docker-compose.yml
+push_docker.cmd
+push_docker.sh
+
+# Archives and large files
+*.zip
+chatbetter2api.zip
+
+# Temporary files
+.DS_Store
+Thumbs.db 

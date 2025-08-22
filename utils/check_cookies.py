@@ -13,7 +13,7 @@ from typing import List, Optional
 # 导入数据库相关模块
 from db import get_db
 from models.tokens import Token
-from utils.register import refresh_silent_cookies, signin_with_access_token
+from utils.register import refresh_silent_cookies, signin_with_access_token, fetch_auth_info
 
 # 导入Redis缓存相关模块
 from utils.redis_cache import test_connection as test_redis_connection
@@ -111,7 +111,11 @@ def refresh_cookies(account: Token, db: Session) -> bool:
         db.commit()
         #logger.info(f"账号 {account.account} 的cookies和access_token刷新成功")
 
-        auth_data=signin_with_access_token(account.access_token)
+        if account.access_token and not account.token:
+            auth0 = signin_with_access_token(account.access_token)
+            account.token=auth0.get('token')
+
+        auth_data=fetch_auth_info(account.token,account.access_token)
 
         if not auth_data:
             logger.error(f"账号 {account.account} 的auth为空")

@@ -144,9 +144,9 @@ def read_tokens(
     db: Session = Depends(get_db), 
     _: bool = Depends(verify_admin)
 ):
-    """获取token列表（带分页）"""
-    items = tokens.get_tokens(db, skip=skip, limit=limit, sort_by=sort_by, sort_desc=sort_desc)
-    total = tokens.count_tokens(db)  # 需要在tokens模块中添加此函数
+    """获取token列表（带分页），支持账号模糊搜索"""
+    items = tokens.get_tokens(db, skip=skip, limit=limit, sort_by=sort_by, sort_desc=sort_desc, account=account)
+    total = tokens.count_tokens(db, account=account)  # 传递 account 参数进行模糊搜索统计
     return {"total": total, "items": items}
 
 @router.put("/{token_id}", response_model=Token)

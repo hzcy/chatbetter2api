@@ -288,19 +288,19 @@ def process_refresh(task_id: str, include_disabled: bool, thread_count: int, db:
             # 如果有token，还要更新auth和account_type
             if account.token:
                 token_str = str(account.token)  # 获取token字符串
-                auth_data = signin_with_access_token(str(access_token))
+                auth_data = fetch_auth_info(str(account.token),str(access_token))
                 if auth_data:
                     # 更新token
                     if auth_data.get('token'):
                         account.token = auth_data.get('token')
-                    
+
                     # 更新account_type
                     if auth_data.get('account_type'):
                         account.account_type = auth_data.get('account_type')
                     
                     # 更新auth
                     account.auth = json.dumps(auth_data)
-            
+
             # 提交更改，使用本线程的数据库会话
             thread_db.commit()
             print(f"[BatchRefresh] 账号 {account_id} 刷新成功")
@@ -433,7 +433,7 @@ async def refresh_account(account_id: int, db: Session = Depends(get_db), _: boo
     
     # 使用signin_with_access_token更新token, account_type和auth
     if account.token:
-        auth_data = signin_with_access_token(str(access_token))
+        auth_data = fetch_auth_info(str(account.token),str(access_token))
         if auth_data:
             # 更新token
             if auth_data.get('token'):

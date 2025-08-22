@@ -85,7 +85,7 @@ def fetch_auth_info(token:str, chat_better_jwt: str) -> Optional[dict]:
                 print(f"[ChatBetter] {error_msg}")
                 return auth_data
                 
-            print(f"[ChatBetter] 获取到token: {token[:20]}... 账号类型: {account_type}")
+            # print(f"[ChatBetter] 获取到token: {token[:20]}... 账号类型: {account_type}")
             return auth_data
             
         except Exception as e:
@@ -138,7 +138,6 @@ def signin_with_access_token(access_token: str) -> Optional[dict]:
             return None
 
         token = auth_data.get('token')
-        account_type = auth_data.get('account_type')
 
         if token:
             pass
@@ -212,11 +211,11 @@ def login_account(email: str, outlook_account: OutlookAccount) -> Tuple[Optional
         print(f"[ChatBetter] 登录成功, 获取accessToken: {access_token[:20]}...")
 
         # 5. 通过 /api/v1/auths/signin 获取认证信息 (推荐)
-        auth_data = signin_with_access_token(access_token)
+        # auth_data = signin_with_access_token(access_token)
 
         # 如果 signin 失败, 再尝试旧的 /auths/ 接口作为回退
-        if not auth_data:
-            auth_data = fetch_auth_info(token, access_token)
+        # if not auth_data:
+        auth_data = fetch_auth_info(token, access_token)
 
 
         if not auth_data:
@@ -399,7 +398,7 @@ def activate_account(activation_link: str) -> Tuple[Optional[Dict[str, Any]], Op
         print(f"[ChatBetter] 获取到accessToken: {access_token[:20]}...")
         
         # 调用API获取认证信息
-        auth_data = signin_with_access_token(access_token)
+        auth_data = fetch_auth_info(token,access_token)
         
         if not auth_data:
             # 严重错误，无数据返回

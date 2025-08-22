@@ -3,6 +3,7 @@ from sqlalchemy.orm import Session
 from datetime import datetime, timedelta
 from db import Base, engine
 import json
+from typing import Optional
 
 class Token(Base):
     __tablename__ = "tokens"
@@ -108,9 +109,13 @@ def get_token_by_account(db: Session, account: str):
     """根据账号获取token"""
     return db.query(Token).filter(Token.account == account, Token.deleted_at == None).first()
 
-def get_tokens(db: Session, skip: int = 0, limit: int = 100, sort_by: str = None, sort_desc: bool = False):
-    """获取所有未删除的token列表"""
+def get_tokens(db: Session, skip: int = 0, limit: int = 100, sort_by: str = None, sort_desc: bool = False, account: Optional[str] = None):
+    """获取所有未删除的token列表，支持账号模糊搜索"""
     query = db.query(Token).filter(Token.deleted_at == None)
+    
+    # 添加账号模糊搜索条件
+    if account:
+        query = query.filter(Token.account.like(f'%{account}%'))
     
     # Add sorting if sort_by is specified and it's a valid column
     if sort_by and hasattr(Token, sort_by):
@@ -122,9 +127,15 @@ def get_tokens(db: Session, skip: int = 0, limit: int = 100, sort_by: str = None
     
     return query.offset(skip).limit(limit).all()
 
-def count_tokens(db: Session):
-    """获取未删除的token总数"""
-    return db.query(func.count(Token.id)).filter(Token.deleted_at == None).scalar()
+def count_tokens(db: Session, account: Optional[str] = None):
+    """获取未删除的token总数，支持账号模糊搜索"""
+    query = db.query(func.count(Token.id)).filter(Token.deleted_at == None)
+    
+    # 添加账号模糊搜索条件
+    if account:
+        query = query.filter(Token.account.like(f'%{account}%'))
+    
+    return query.scalar()
 
 def update_token(db: Session, token_id: int, token_data: dict):
     """更新token信息"""

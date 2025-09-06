@@ -7,7 +7,7 @@ services:
     container_name: chatbetter2api-mysql
     restart: always
     environment:
-      MYSQL_ROOT_PASSWORD: Shijie11
+      MYSQL_ROOT_PASSWORD: 123456
       MYSQL_DATABASE: chatbetter2api
       TZ: Asia/Shanghai
     ports:
@@ -45,9 +45,9 @@ services:
         condition: service_started
     environment:
       - MYSQL_USER=root
-      - MYSQL_PASSWORD=Shijie11
+      - MYSQL_PASSWORD=123456
       - FILE_DOMAIN=https://file.xxsxx.fun
-      - ADMIN_PASSWORD=Shijie11
+      - ADMIN_PASSWORD=123456
       - REGISTER_MAX_THREADS=10
       - PROXY_URL=socks5://gw.dataimpulse.com:824
       - TZ=Asia/Shanghai
